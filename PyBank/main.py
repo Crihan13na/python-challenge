@@ -57,8 +57,8 @@ with open( budget_data, newline="") as csvfile:
 
 #Print Statements
 print("                                 ")
-print('Financial Analysis')
-print('----------------------------')
+print("Financial Analysis")
+print("----------------------------")
 
 
 print("Total number of months: " + str(len(total_month)))
@@ -75,9 +75,14 @@ print("--------------------------------")
 #write file
 f = open("pybank.txt","w")   
 #add file in write mode
+f.write("                                  ")
+f.write("----------------------------------")
+f.write("Financial Analyssis")
+f.write("----------------------------------")
 f.write("Total number of months: " + str(len(total_month))+ "\n")
 f.write("Total Revenue in period: $ " + str(total_revenue)+ "\n")
 f.write("Average monthly change in Revenue : $" + str(monthly_change)+ "\n")
 f.write(f"Greatest Increase in Profits: " + str(total_month_increase) + " ($" +  str(greatest_increase)+ ") " + "\n")
 f.write(f"Greatest Decrease in Profits: " + str(total_month_decrease) + " ($" + str(greatest_decrease)+ ") " + "\n")
+f.write("----------------------------------")
 f.close

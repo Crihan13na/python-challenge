@@ -33,8 +33,9 @@ Li_percent = (int(Li) / len(candidate) * 100)
 
 OTooley = candidate.count("O'Tooley")
 OTooley_percent = (int(OTooley) / len(candidate) * 100)
-
-
+print("-----------------------------")
+print("                             ")
+print("-----------------------------")
 #Comparing the number of votes
 if Khan_percent >= .50:
 	print("Winner: Khan")
@@ -45,8 +46,7 @@ elif Li_percent >= .50:
 else:
 	print("Winner: O'Tooley")	
 
-# print total for each candidate, wtih percentage and total votes
-# print election header
+    # print total for each candidate, wtih percentage and total votes
 print("                             ")
 print("----------------------------")
 print("Election Results")
@@ -57,15 +57,21 @@ print("Khan: " + str((round(Khan_percent))) + "% (" + str(Khan) + ")")
 print("Correy: " + str((round(Correy_percent))) + "% (" + str(Correy) + ")")
 print("Li: " + str((round(Li_percent))) + "% (" + str(Li) + ")")
 print("O'Tooley " + str((round(OTooley_percent))) + "% (" + str(OTooley) + ")")
-
 print("----------------------------")
 
 
 # write file
 f = open("pypoll.txt","w")   
 # add file in write mode
+f.write("                            ")
+f.write("---------------------------------")
+f.write("Election Results")
+f.write("----------------------------------")
+f.write("Total Votes")
+f.write("----------------------------------")
 f.write("Khan: " + str((round(Khan_percent))) + "% (" + str(Khan) + ")"+ "\n")
 f.write("Correy: " + str((round(Correy_percent))) + "% (" + str(Correy) + ")" + "\n")
-f.write("Li: " + str((round(Li_percent))) + "% (" + str(Li) + ")")
+f.write("Li: " + str((round(Li_percent))) + "% (" + str(Li) + ")" +"\n")
 f.write("O'Tooley " + str((round(OTooley_percent))) + "% (" + str(OTooley) + ")" + "\n")
+f.write(("-----------------------------------")+ "\n")
 f.close()		
