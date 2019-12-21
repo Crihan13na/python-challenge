@@ -64,8 +64,8 @@ print("----------------------------")
 # write file
 f = open("pypoll.txt","w")   
 # add file in write mode
-f.write("Khan: " + str((round(Khan_percent))) + "% (" + str(Khan) + ")")
-f.write("Correy: " + str((round(Correy_percent))) + "% (" + str(Correy) + ")")
+f.write("Khan: " + str((round(Khan_percent))) + "% (" + str(Khan) + ")"+ "\n")
+f.write("Correy: " + str((round(Correy_percent))) + "% (" + str(Correy) + ")" + "\n")
 f.write("Li: " + str((round(Li_percent))) + "% (" + str(Li) + ")")
-f.write("O'Tooley " + str((round(OTooley_percent))) + "% (" + str(OTooley) + ")")
+f.write("O'Tooley " + str((round(OTooley_percent))) + "% (" + str(OTooley) + ")" + "\n")
 f.close()		

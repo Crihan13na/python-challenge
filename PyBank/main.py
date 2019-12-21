@@ -75,9 +75,9 @@ print("--------------------------------")
 #write file
 f = open("pybank.txt","w")   
 #add file in write mode
-f.write("Total number of months: " + str(len(total_month)))
-f.write("Total Revenue in period: $ " + str(total_revenue))
-f.write("Average monthly change in Revenue : $" + str(monthly_change))
-f.write(f"Greatest Increase in Profits: " + str(total_month_increase) + " ($" +  str(greatest_increase)+ ") " )
-f.write(f"Greatest Decrease in Profits: " + str(total_month_decrease) + " ($" + str(greatest_decrease)+ ") " )
+f.write("Total number of months: " + str(len(total_month))+ "\n")
+f.write("Total Revenue in period: $ " + str(total_revenue)+ "\n")
+f.write("Average monthly change in Revenue : $" + str(monthly_change)+ "\n")
+f.write(f"Greatest Increase in Profits: " + str(total_month_increase) + " ($" +  str(greatest_increase)+ ") " + "\n")
+f.write(f"Greatest Decrease in Profits: " + str(total_month_decrease) + " ($" + str(greatest_decrease)+ ") " + "\n")
 f.close
