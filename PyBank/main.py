@@ -56,11 +56,9 @@ with open( budget_data, newline="") as csvfile:
 
 
 #Print Statements
-print("                                 ")
+print("-----------------------------")
 print("Financial Analysis")
 print("----------------------------")
-
-
 print("Total number of months: " + str(len(total_month)))
 
 print("Total Revenue in period: $ " + str(total_revenue))
@@ -75,14 +73,14 @@ print("--------------------------------")
 #write file
 f = open("pybank.txt","w")   
 #add file in write mode
-f.write("                                  " + "\n")
-f.write("----------------------------------" + "\n")
+f.write("                                  " + "\r\n")
+f.write("----------------------------------" + "\r\n")
 f.write("Financial Analyssis")
-f.write("----------------------------------" + "\n")
-f.write("Total number of months: " + str(len(total_month))+ "\n")
-f.write("Total Revenue in period: $ " + str(total_revenue)+ "\n")
-f.write("Average monthly change in Revenue : $" + str(monthly_change)+ "\n")
-f.write(f"Greatest Increase in Profits: " + str(total_month_increase) + " ($" +  str(greatest_increase)+ ") " + "\n")
-f.write(f"Greatest Decrease in Profits: " + str(total_month_decrease) + " ($" + str(greatest_decrease)+ ") " + "\n")
-f.write("----------------------------------" + "\n")
+f.write("----------------------------------" + "\r\n")
+f.write("Total number of months: " + str(len(total_month))+ "\r\n")
+f.write("Total Revenue in period: $ " + str(total_revenue)+ "\r\n")
+f.write("Average monthly change in Revenue : $" + str(monthly_change)+ "\r\n")
+f.write(f"Greatest Increase in Profits: " + str(total_month_increase) + " ($" +  str(greatest_increase)+ ") " + "\r\n")
+f.write(f"Greatest Decrease in Profits: " + str(total_month_decrease) + " ($" + str(greatest_decrease)+ ") " + "\r\n")
+f.write("----------------------------------" + "\r\n")
 f.close
