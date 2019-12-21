@@ -1,1 +1,5 @@
-Total number of months: 86Total Revenue in period: $ 38382578Average monthly change in Revenue : $-2315.1176470588234Greatest Increase in Profits: Feb-2012 ($1926159)Greatest Decrease in Profits: Sep-2013 ($-2196167)
+Total number of months: 86
+Total Revenue in period: $ 38382578
+Average monthly change in Revenue : $-2315.1176470588234
+Greatest Increase in Profits: Feb-2012 ($1926159) 
+Greatest Decrease in Profits: Sep-2013 ($-2196167) 
