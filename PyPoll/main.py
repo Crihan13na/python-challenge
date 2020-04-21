@@ -1,77 +1,112 @@
+# Dependencies
+import pandas as pd
 import os
-import csv
 
-pypoll_csv = os.path.join( "election_data.csv")
+# Create reference to the csv file
+csv_file = "Resources/election_data.csv"
 
-#set lists to store data
-candidate = []
+# Read in csv and display commas for numbers
+pd.options.display.float_format = '{:,.0f}'.format
+election_data_df = pd.read_csv(csv_file)
 
-#with open to read election_data.csv file
-with open(pypoll_csv) as csvfile:
-  csvreader = csv.reader(csvfile, delimiter=',')
+# Print the first 5 lines of dataframe (jupyter notebook only)
+# election_data_df.head()
 
-  reader=next(csvreader)
+# Print data.
+print(election_data_df)
 
-# Read each row of data after the header
-  for row in csvreader:
-      
-#add candidate
-    candidate.append(row[2])
+# Calculate the total number of votes cast
+num_votes = election_data_df["Voter ID"].count()
 
+print(f"Total number of votes cast: {num_votes}")
 
-#Calculates the percentage of votes for each candidate
-Khan = candidate.count("Khan")
-Khan_percent = (int(Khan) / len(candidate) * 100)
+# Get a complete list of candidates who received votes
+list_candidates = election_data_df["Candidate"].unique()
 
-Correy = candidate.count("Correy")
-Correy_percent = (int(Correy) / len(candidate) * 100)
+print("List of candidates who have received votes:")
+print(list_candidates)
 
+# Calculate the total number of votes each candidate won
+num_votes_list = []
+for candidate in list_candidates:
+    votes_for_candidate_df = election_data_df.loc[election_data_df["Candidate"] == candidate]
+    num_votes_candidate = votes_for_candidate_df["Voter ID"].count()
+    num_votes_list.append(num_votes_candidate)
 
-Li = candidate.count("Li")
-Li_percent = (int(Li) / len(candidate) * 100)
+print("Number of votes each candidate won:")
+print(num_votes_list)
 
+# Calculate the percentage of votes each candidate won
+percent_votes_list = []
+for vote_count in num_votes_list:
+    percent_votes_candidate = (vote_count / num_votes) * 100
+    percent_votes_candidate = round(percent_votes_candidate, 2)
+    percent_votes_list.append(percent_votes_candidate)
 
-OTooley = candidate.count("O'Tooley")
-OTooley_percent = (int(OTooley) / len(candidate) * 100)
-print("-----------------------------")
-print("                             ")
-print("-----------------------------")
-#Comparing the number of votes
-if Khan_percent >= .50:
-	print("Winner: Khan")
-elif Correy_percent >= .50:
-	print("Winner: Correy")
-elif Li_percent >= .50:
-	print("Winner: Li")
-else:
-	print("Winner: O'Tooley")	
+print("Percentage of votes each candidate won:")
+print(percent_votes_list)
 
-    # print total for each candidate, wtih percentage and total votes
-print("                             ")
-print("----------------------------")
+# Calculate the winner of the election based on popular vote.
+
+# Construct dictionary of lists to get election results.
+election_results_dict = {
+    "Candidates": list_candidates,
+    "Number of Votes": num_votes_list,
+    "Percentage of Votes (%)": percent_votes_list
+}
+
+# Create dataframe from dictionary of lists.
+election_results_df = pd.DataFrame(election_results_dict)
+
+# Sort results in descending order to determine winner.
+election_results_descending_df = election_results_df.sort_values(
+    "Number of Votes", ascending=False)
+
+# Reset index of sorted results.
+election_results_descending_df = election_results_descending_df.reset_index(
+    drop=True)
+
+# Store winner in variable.
+winner = election_results_descending_df.iloc[0]['Candidates']
+print(f"Winner: {winner}")
+
+# Formatting - add percent sign to values in the percentage of votes column.
+election_results_descending_df["Percentage of Votes (%)"] = election_results_descending_df["Percentage of Votes (%)"].astype(
+    str) + '%'
+
+# Convert number of votes column values type to float for formatting numbers to have commas.
+election_results_descending_df["Number of Votes"] = election_results_descending_df["Number of Votes"].astype(
+    float)
+
+# Print results in descending order.
+election_results_descending_df
+
+# Print analysis
+print("---------------------------------------------------------------")
 print("Election Results")
-print("----------------------------")
-print("Total Votes: " + str(len(candidate)))
-print("----------------------------")
-print("Khan: " + str((round(Khan_percent))) + "% (" + str(Khan) + ")")
-print("Correy: " + str((round(Correy_percent))) + "% (" + str(Correy) + ")")
-print("Li: " + str((round(Li_percent))) + "% (" + str(Li) + ")")
-print("O'Tooley " + str((round(OTooley_percent))) + "% (" + str(OTooley) + ")")
-print("----------------------------")
+print("---------------------------------------------------------------")
+print("Total votes: {:,.0f}".format(num_votes))
+print("---------------------------------------------------------------")
+print(election_results_descending_df.to_string(index=False))
+print("---------------------------------------------------------------")
+print(f"Winner: {winner}")
+print("---------------------------------------------------------------")
 
+# Export a text file with the results.
+with open("election_results.txt", 'w') as file:
 
-# write file
-f = open("pypoll.txt","w")   
-# add file in write mode
-f.write("                            " + "\r\n")
-f.write("---------------------------------" + "\r\n")
-f.write("Election Results")
-f.write("----------------------------------" + "\r\n")
-f.write("Total Votes")
-f.write("----------------------------------" + "\r\n")
-f.write("Khan: " + str((round(Khan_percent))) + "% (" + str(Khan) + ")"+ "\r\n")
-f.write("Correy: " + str((round(Correy_percent))) + "% (" + str(Correy) + ")" + "\r\n")
-f.write("Li: " + str((round(Li_percent))) + "% (" + str(Li) + ")" +"\r\n")
-f.write("O'Tooley " + str((round(OTooley_percent))) + "% (" + str(OTooley) + ")" + "\r\n")
-f.write(("-----------------------------------")+ "\r\n")
-f.close()		
+    file.write(
+        "---------------------------------------------------------------\r\n")
+    file.write("Election Results\r\n")
+    file.write(
+        "---------------------------------------------------------------\r\n")
+    file.write("Total votes: {:,.0f}".format(num_votes) + "\r\n")
+    file.write(
+        "---------------------------------------------------------------\r\n")
+    file.write(election_results_descending_df.to_string(
+        index=False) + "\r\n")
+    file.write(
+        "---------------------------------------------------------------\r\n")
+    file.write(f"Winner: {winner}\r\n")
+    file.write(
+        "---------------------------------------------------------------\r\n")

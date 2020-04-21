@@ -1,86 +1,114 @@
-#import library
-import os
-import csv
+# Dependencies
+import pandas as pd
 
-#showing the path
-budget_data = os.path.join ("budget_data.csv")
+# Create a reference to the csv file we want to read.
+budget_csv = "Resources/budget_data.csv"
 
-# open and read csv
-with open( budget_data, newline="") as csvfile:
-    csvreader = csv.reader(csvfile, delimiter=",")
-    csv_header = next(csvfile)
-    # skip header row
-    print(f"Header: {csv_header}")
+# Read the csv.
+budget_df = pd.read_csv(budget_csv)
 
-    # find net amount of profit and loss
-    total_month = []
-    revenue = []
-    revenue_change = []
-    monthly_change = []
-    
+# Print the first 5 rows of data (jupyter notebook only)
+# budget_df.head()
 
-    #read through each row of data after header
-    #Calculates the total number of Months       
-    for row in csvreader:
-        total_month.append(row[0])
-        revenue.append(row[1])
-    
- #Calculates the total Revenue 
-    revenue_int = map(int,revenue)
-    total_revenue = (sum(revenue_int))
-    
+# Print data
+print(budget_df)
 
- #Calculates the Change of Avarage
-    i = 0
-    for i in range(len(revenue) - 1):
-        profit_loss = int(revenue[i+1]) - int(revenue[i])
- 
-        revenue_change.append(profit_loss)
-    Total = sum(revenue_change)
-    #print(revenue_change)
-    monthly_change = Total / len(revenue_change)
-    print(monthly_change)
-    #print(Total)
-    
-#Calculates the Greatest Increase
-    greatest_increase = max(revenue_change)
-    
-    greatIn = revenue_change.index(greatest_increase)
-    total_month_increase = total_month[greatIn+1]
-    
-#Calculates the Greatest Decrease
-    greatest_decrease = min(revenue_change)
-    
-    greatD = revenue_change.index(greatest_decrease)
-    total_month_decrease = total_month[greatD+1]
+# Calculate the total number of months included in the dataset.
+num_months = budget_df["Date"].count()
 
+print(f"Total number of months: {num_months}")
 
-#Print Statements
-print("-----------------------------")
+# Calculate the net total amount of "Profit/Losses" over the entire period.
+net_total = budget_df["Profit/Losses"].sum()
+
+print(f"Net total amount of profit/losses: ${net_total}")
+
+# Calculate the average of the changes in "Profit/Losses" over the entire period.
+
+# Calculate the difference between two values by subtracting the starting value
+# from the ending value for each value in the "Profit/Losses" column.
+difference = budget_df['Profit/Losses'].diff()
+
+# Add new column for difference.
+budget_df["Difference"] = difference
+
+# Sum up the difference values in the Difference column.
+sum_of_differences = budget_df["Difference"].sum()
+
+# Figure out the number of difference values in the Difference column.
+num_of_differences = budget_df["Difference"].count()
+
+# Calculate average of changes.
+average_of_changes = sum_of_differences / num_of_differences
+
+# Round to two decimal places.
+average_of_changes = round(average_of_changes, 2)
+
+print(f"Average of changes: ${average_of_changes}")
+
+budget_df.head()
+
+# Calculate the greatest increase in profits (date and amount) over the entire period
+
+# Sort dataset in descending order to find greatest increase in profits.
+budget_df_descending = budget_df.sort_values("Difference", ascending=False)
+
+# Reset index.
+budget_df_descending = budget_df_descending.reset_index(drop=True)
+
+# Find greatest increase amount value and store in variable.
+greatest_increase_amount = budget_df_descending.iloc[0]["Difference"]
+
+# Find greatest increase date value and store in variable.
+greatest_increase_date = budget_df_descending.iloc[0]["Date"]
+
+print(f"Greatest increase amount: ${greatest_increase_amount}")
+print(f"Greatest increase date: {greatest_increase_date}")
+
+budget_df_descending.head()
+
+# Calculate the greatest decrease in losses (date and amount) over the entire period
+
+# Sort dataset in ascending order to find greatest decrease in profits.
+budget_df_ascending = budget_df.sort_values("Difference")
+
+# Reset index
+budget_df_ascending = budget_df_ascending.reset_index(drop=True)
+
+# Find greatest decrease amount value and store in variable.
+greatest_decrease_amount = budget_df_ascending.iloc[0]["Difference"]
+
+# Find greatest decrease date value and store in variable.
+greatest_decrease_date = budget_df_ascending.iloc[0]["Date"]
+
+print(f"Greatest decrease amount: ${greatest_decrease_amount}")
+print(f"Greatest decrease date: {greatest_decrease_date}")
+
+budget_df_ascending.head()
+
+# Print the analysis to the terminal and export a text file with the results.
+print("-----------------------------------")
 print("Financial Analysis")
-print("----------------------------")
-print("Total number of months: " + str(len(total_month)))
+print("-----------------------------------")
+print(f"Total Months: {num_months}")
+print("Total: ${:,.2f}".format(net_total))
+print("Average Change: ${:,.2f}".format(average_of_changes))
+print("Greatest Increase in Profits: " + greatest_increase_date +
+      ", ${:,.2f}".format(greatest_increase_amount))
+print("Greatest Decrease in Profits: " + greatest_decrease_date +
+      ", ${:,.2f}".format(greatest_decrease_amount))
 
-print("Total Revenue in period: $ " + str(total_revenue))
-      
-print("Average monthly change in Revenue : $" + str(monthly_change))
+# Export a text file with the results.
+with open("financial_results.txt", 'w') as file:
 
-print("Greatest Increase in Profits:  " + str(total_month_increase) + " ($" + str(greatest_increase)+ ") " )
-
-print("Greatest Decrease in Profits: " + str(total_month_decrease) + " ($" + str(greatest_decrease) + ") ")
-print("--------------------------------")
-
-#write file
-f = open("pybank.txt","w")   
-#add file in write mode
-f.write("                                  " + "\r\n")
-f.write("----------------------------------" + "\r\n")
-f.write("Financial Analyssis")
-f.write("----------------------------------" + "\r\n")
-f.write("Total number of months: " + str(len(total_month))+ "\r\n")
-f.write("Total Revenue in period: $ " + str(total_revenue)+ "\r\n")
-f.write("Average monthly change in Revenue : $" + str(monthly_change)+ "\r\n")
-f.write(f"Greatest Increase in Profits: " + str(total_month_increase) + " ($" +  str(greatest_increase)+ ") " + "\r\n")
-f.write(f"Greatest Decrease in Profits: " + str(total_month_decrease) + " ($" + str(greatest_decrease)+ ") " + "\r\n")
-f.write("----------------------------------" + "\r\n")
-f.close
+    file.write("-------------------------------------------------------\r\n")
+    file.write("Financial Analysis\r\n")
+    file.write(
+        "---------------------------------------------------------------\r\n")
+    file.write(f"Total Months: {num_months}\r\n")
+    file.write("Total: ${:,.2f}\r\n".format(net_total))
+    file.write("Average Change: ${:,.2f}\r\n".format(average_of_changes))
+    file.write("Greatest Increase in Profits: " + greatest_increase_date +
+               ", ${:,.2f}\r\n".format(greatest_increase_amount))
+    file.write("Greatest Decrease in Profits: " + greatest_decrease_date +
+               ", ${:,.2f}\r\n".format(greatest_decrease_amount))
